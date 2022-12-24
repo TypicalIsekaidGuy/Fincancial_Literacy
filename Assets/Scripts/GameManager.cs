@@ -10,6 +10,7 @@ using System.Data;
 using System.Globalization;
 using UnityEngine.UI;
 using Newtonsoft.Json.Bson;
+using Unity.VisualScripting;
 
 public class GameManager : MonoBehaviour
 {
@@ -49,6 +50,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject losePanel;
     public GameObject[] Scenes;
 
+    /*Реализация акций*/
+    [SerializeField] private TextMeshProUGUI[] actionNames;
+    [SerializeField] private TextMeshProUGUI[] costText;
+    public int[] actionIndexes = new int[2];
+    public int[] cost = new int[2];
+    public bool[] isActionUp = new bool[2];
+    public bool[] isActionBought = new bool[2];
+    [SerializeField] private Sprite[] graphsImage;
+    [SerializeField] private Image[] graphs;
+
     /*Загрузка либо создание сохранений*/
     private void Start()
     {
@@ -57,6 +68,7 @@ public class GameManager : MonoBehaviour
         if (!File.Exists(saveFile))// Проверка на несуществования файла
         {
             File.Create(saveFile).Dispose();// Создание файла, если его нет
+            CreateActions();
             SaveData();
         }
         else
@@ -72,7 +84,7 @@ public class GameManager : MonoBehaviour
         SetHapiness();
         SetPerfomance();
         SetFinancial_literacy();
-        Debug.Log(saturation);
+        SetActions();
     }
     #region UIUpdate
     /* регион для изменения UI, который отоброжает актульное состояние переменной */
@@ -104,23 +116,62 @@ public class GameManager : MonoBehaviour
     {
         financial_literacySlider.value = financial_literacy;
     }
+    private void SetActions()
+    {
+        for(int i = 0; i < actionIndexes.Length; i++)
+        {
+            actionNames[i].text = "Акция № " + actionIndexes[i];
+            if (actionIndexes[i] > 500)
+            {
+                isActionUp[i] = true;
+                graphs[i].sprite = graphsImage[0];
+            }
+            else
+            {
+                isActionUp[i] = false;
+                graphs[i].sprite = graphsImage[1];
+            }
+            costText[i].text = "Цена: " + cost[i].ToString();
+            isActionBought[i] = false;
+        }
+    }
     #endregion
     #region ChangeVar
     /* регион для изменения каждой переменной */
     public void ChangeDateTime(float i)
     {
         Debug.Log(dateTime);
-        Debug.Log(tmpDate);
-        dateTime = dateTime.AddHours((double)i);
+        Debug.Log(dateTime.AddHours((double)i).ToString() + "sassa");
+        DateTime newdateTime = dateTime.AddHours((double)i);
+        dateTime = newdateTime;
         ChangeSaturation(-i * saturationMutliplier);
         ChangeHappiness(-i * happinessMutliplier);
         if (dateTime.CompareTo(tmpDate) > 0 || dateTime.CompareTo(tmpDate) == 0)
         {
+            for (int index = 0; index < actionIndexes.Length; index++)
+            {
+                if (isActionBought[index])
+                {
+                    if (isActionUp[index])
+                    {
+                        ChangeFinancialLiteracy(5);
+                        ChangeMoney(cost[index] * (financial_literacy / 100 + 1));
+                    }
+                    else
+                    {
+                        ChangeFinancialLiteracy(-3);
+                        ChangeMoney(cost[index]/2);
+                    }
+                }
+                CreateActions();
+            }
+            DateTime nedateTime = tmpDate.AddDays(1);
+            tmpDate = nedateTime;
             double hours = (dateTime - tmpDate).TotalHours;
-            tmpDate = tmpDate.AddDays(1);
             Debug.Log(tmpDate + "temp");
             i = (float)(7 + hours);
-            dateTime = dateTime.AddHours((double)i);
+            DateTime ndateTime = dateTime.AddHours((double)i);
+            dateTime = ndateTime;
             if (dateTime.Day == 2 && (dateTime.Month != 1 || dateTime.Month != 6 || dateTime.Month != 7 || dateTime.Month != 8 || dateTime.Month != 9))
             {
                 PerfomanceCheck();
@@ -218,7 +269,6 @@ public class GameManager : MonoBehaviour
     }
     private void SaturationCheck() {
 
-        Debug.Log(saturation);
         if (saturation <= 0)
         {
             GameOver();
@@ -233,16 +283,38 @@ public class GameManager : MonoBehaviour
         }
     }
     #endregion
+    public void BuyAction(int index)
+    {
+        if (!isActionBought[index])
+        {
+            ChangeMoney(-cost[index]);
+            actionNames[index].text = "Куплено";
+            isActionBought[index] = true;
+        }
+        SaveData();
+    }
+    public void CreateActions()
+    {
+        for (int i = 0; i < actionIndexes.Length; i++)
+        {
+            actionIndexes[i] = UnityEngine.Random.Range(0, 1000);
+            cost[i] = UnityEngine.Random.Range(0, 1000);
+        }
+        SetActions();
+        SaveData();
+    }
     private void GameOver()
     {
         losePanel.SetActive(true);
     }
     public void Restart()
     {
-        Wrapper wrapper = new Wrapper(new DateTime(2017, 9, 1, 6, 0, 0).ToString(), new DateTime(2017, 9, 1, 23, 0, 0).ToString(), 100, 100, 0, 0, 0, States.BOMJ, false);
+        Wrapper wrapper = new Wrapper(new DateTime(2017, 9, 1, 6, 0, 0).ToString(), new DateTime(2017, 9, 1, 23, 0, 0).ToString(), 100, 100, 0, 0, 0, States.BOMJ, false, new int[2], new int[2], new bool[2], new bool[2]);
         string json = JsonUtility.ToJson(wrapper);
         string saveFile = Application.persistentDataPath + "/saveFile.json";
-        File.WriteAllText(saveFile, json);
+        TextWriter writer = new StreamWriter(saveFile, false);
+        writer.Write(json);
+        writer.Close();
         LoadData();
         SetDate();
         SetTime();
@@ -251,16 +323,20 @@ public class GameManager : MonoBehaviour
         SetHapiness();
         SetPerfomance();
         SetFinancial_literacy();
+        CreateActions();
+        SetActions();
         losePanel.SetActive(false);
     }
     #region Serialization
     /*регион для сохранений*/
     public void SaveData() //метод, который реализует класс, в котором записываются все переменные в этом скрипте, сохраняются в json и записываются в файл
     {
-        Wrapper wrapper = new Wrapper(dateTime.ToString(), tmpDate.ToString(), saturation, happiness, perfomance,financial_literacy,money,state, isPerfomanceInDanger);
+        Wrapper wrapper = new Wrapper(dateTime.ToString(), tmpDate.ToString(), saturation, happiness, perfomance,financial_literacy,money,state, isPerfomanceInDanger, actionIndexes, cost, isActionUp, isActionBought);
         string json = JsonUtility.ToJson(wrapper);
         string saveFile = Application.persistentDataPath + "/saveFile.json";
-        File.WriteAllText(saveFile,json);
+        TextWriter writer = new StreamWriter(saveFile, false);
+        writer.Write(json);
+        writer.Close();
     }
     public void LoadData()
     {
@@ -276,6 +352,10 @@ public class GameManager : MonoBehaviour
         money = wrapper.money;
         state = wrapper.state;
         isPerfomanceInDanger = wrapper.isPerfomanceInDanger;
+        actionIndexes = wrapper.actionIndexes;
+        cost = wrapper.cost;
+        isActionUp = wrapper.isActionUp;
+        isActionBought = wrapper.isActionBought;
     }
     public class Wrapper
     {
@@ -288,7 +368,11 @@ public class GameManager : MonoBehaviour
         float financial_literacy,
         float money,
         GameManager.States state,
-        bool isPerfomanceInDanger
+        bool isPerfomanceInDanger,
+        int[] actionIndexes,
+        int[] cost,
+        bool[] isActionUp,
+        bool[] isActionBought
         )
         {
             this.dateTime = dateTime;
@@ -300,6 +384,10 @@ public class GameManager : MonoBehaviour
             this.money = money;
             this.state = state;
             this.isPerfomanceInDanger = isPerfomanceInDanger;
+            this.actionIndexes = actionIndexes;
+            this.cost = cost;
+            this.isActionUp = isActionUp;
+            this.isActionBought = isActionBought;
         }
         public string dateTime;
         public string tmpDate;
@@ -310,6 +398,10 @@ public class GameManager : MonoBehaviour
         public float money;
         public GameManager.States state;
         public bool isPerfomanceInDanger;
+        public int[] actionIndexes;
+        public int[] cost;
+        public bool[] isActionUp;
+        public bool[] isActionBought;
     }
     #endregion
 }

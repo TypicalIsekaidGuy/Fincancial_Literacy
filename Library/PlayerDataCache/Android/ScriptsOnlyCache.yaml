@@ -7,6 +7,7 @@ ScriptsOnlyBuild:
     - UnityEditor.U2D.Animation.BoneGizmo
     Unity.2D.IK.Editor.dll:
     - UnityEditor.U2D.IK.IKEditorManager
+    - UnityEditor.U2D.IK.IKGizmos
     Unity.2D.Tilemap.Editor.dll:
     - UnityEditor.Tilemaps.GridBrush
     - UnityEditor.Tilemaps.GridPaintingState
@@ -42,10 +43,7 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.CanvasScaler
     - UnityEngine.UI.GraphicRaycaster
     - UnityEngine.UI.Image
-    - UnityEngine.UI.Mask
-    - UnityEngine.UI.ScrollRect
     - UnityEngine.UI.Slider
-    - UnityEngine.UI.VerticalLayoutGroup
   serializedClasses:
     Unity.TextMeshPro:
     - TMPro.FaceInfo_Legacy
@@ -66,7 +64,6 @@ ScriptsOnlyBuild:
     - UnityEngine.Events.ArgumentCache
     - UnityEngine.Events.PersistentCallGroup
     - UnityEngine.Events.PersistentListenerMode
-    - UnityEngine.RectOffset
     UnityEngine.TextCoreFontEngineModule:
     - UnityEngine.TextCore.FaceInfo
     - UnityEngine.TextCore.Glyph
@@ -78,7 +75,6 @@ ScriptsOnlyBuild:
     - UnityEngine.UI.ColorBlock
     - UnityEngine.UI.MaskableGraphic/CullStateChangedEvent
     - UnityEngine.UI.Navigation
-    - UnityEngine.UI.ScrollRect/ScrollRectEvent
     - UnityEngine.UI.Slider/SliderEvent
     - UnityEngine.UI.SpriteState
   methodsToPreserve:
@@ -114,6 +110,21 @@ ScriptsOnlyBuild:
     methodName: ChangeDateTime
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
+    methodName: BuyAction
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
     methodName: ChangeHappiness
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
@@ -156,6 +167,21 @@ ScriptsOnlyBuild:
     methodName: SwitchPanel
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
+    methodName: BuyAction
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangePerfomance
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
     methodName: ChangeMoney
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
@@ -219,7 +245,40 @@ ScriptsOnlyBuild:
     methodName: ChangeDateTime
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
+    methodName: ChangePerfomance
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
     methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangePerfomance
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangePerfomance
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
     methodName: ChangeHappiness
@@ -246,6 +305,57 @@ ScriptsOnlyBuild:
     methodName: ChangeMoney
   - assembly: Assembly-CSharp
     fullTypeName: GameManager
+    methodName: ChangePerfomance
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangePerfomance
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeHappiness
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeDateTime
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: UnityEngine.CoreModule
+    fullTypeName: UnityEngine.GameObject
+    methodName: SetActive
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
+    methodName: ChangeMoney
+  - assembly: Assembly-CSharp
+    fullTypeName: GameManager
     methodName: ChangeDateTime
   - assembly: Assembly-CSharp
     fullTypeName: UIManager
@@ -260,19 +370,11 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 21
       Script: {instanceID: 0}
-    - Class: 23
-      Script: {instanceID: 0}
     - Class: 28
-      Script: {instanceID: 0}
-    - Class: 33
-      Script: {instanceID: 0}
-    - Class: 43
       Script: {instanceID: 0}
     - Class: 48
       Script: {instanceID: 0}
     - Class: 49
-      Script: {instanceID: 0}
-    - Class: 65
       Script: {instanceID: 0}
     - Class: 81
       Script: {instanceID: 0}
@@ -297,8 +399,6 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 4276}
     - Class: 114
-      Script: {instanceID: 4474}
-    - Class: 114
       Script: {instanceID: 4642}
     - Class: 114
       Script: {instanceID: 4778}
@@ -315,15 +415,9 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 7410}
     - Class: 114
-      Script: {instanceID: 7958}
+      Script: {instanceID: 25836}
     - Class: 114
-      Script: {instanceID: 8776}
-    - Class: 114
-      Script: {instanceID: 25720}
-    - Class: 114
-      Script: {instanceID: 25722}
-    - Class: 114
-      Script: {instanceID: 25750}
+      Script: {instanceID: 25838}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 128
@@ -745,7 +839,7 @@ ScriptsOnlyBuild:
     className: ScriptGraphAsset
   - hash:
       serializedVersion: 2
-      Hash: c561ab4dab73dc87a5dde3a4f32b1388
+      Hash: 32d641ec11845e96a640a8d98df7d07f
     assemblyName: Assembly-CSharp.dll
     namespaceName: 
     className: GameManager
@@ -1484,4 +1578,4 @@ ScriptsOnlyBuild:
   platform: 13
   scenePathNames:
   - Assets/dnkv.unity
-  playerPath: D:/FINANCE.apk
+  playerPath: "D:/\u0438\u0433\u0440\u0430 \u043A\u043E\u043F\u0438\u044F/FINANCE.apk"

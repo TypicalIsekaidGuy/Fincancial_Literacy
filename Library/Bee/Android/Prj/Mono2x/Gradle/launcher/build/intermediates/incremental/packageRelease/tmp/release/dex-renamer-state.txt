@@ -1,4 +1,4 @@
-#Sun Dec 04 16:09:00 MSK 2022
-base.0=D\:\\Repositories\\FinancailLiteracy\\FinancialLiteracy\\Library\\Bee\\Android\\Prj\\Mono2x\\Gradle\\launcher\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
+#Sun Dec 11 21:21:52 MSK 2022
+base.0=D\:\\Repositories\\FinancailLiteracy\\Fincancial_Literacy\\Library\\Bee\\Android\\Prj\\Mono2x\\Gradle\\launcher\\build\\intermediates\\dex\\release\\mergeDexRelease\\classes.dex
 path.0=classes.dex
 renamed.0=classes.dex
